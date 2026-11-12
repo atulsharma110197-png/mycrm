@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LeadFlow CRM</title>
+<style>
+:root{--bg:#f4f6fb;--sf:#fff;--tx:#18202f;--mu:#667085;--bd:#e4e8f0;--pr:#2563eb;--pr2:#eaf1ff;--ok:#16a34a;--wa:#d97706;--er:#dc2626;--sb:#0f172a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1220;--sf:#131c2e;--tx:#e8edf7;--mu:#93a0b8;--bd:#24304a;--pr:#5b8cff;--pr2:#1b2a4d;--sb:#070c17}}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}body{margin:0;font:14px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx);display:flex;min-height:100vh}
+aside{width:220px;background:var(--sb);color:#cbd5e1;padding:18px 12px;flex-shrink:0;display:flex;flex-direction:column;gap:4px}
+.logo{color:#fff;font-weight:700;font-size:18px;padding:4px 10px 16px}.logo b{color:#60a5fa}
+.nav{padding:10px 12px;border-radius:8px;cursor:pointer;border:0;background:none;color:inherit;text-align:left;font:inherit;display:flex;justify-content:space-between}
+.nav:hover{background:#1e293b}.nav.on{background:var(--pr);color:#fff}
+.badge{background:var(--er);color:#fff;border-radius:10px;padding:0 7px;font-size:11px;line-height:18px}
+main{flex:1;padding:22px;min-width:0}
+h1{margin:0 0 4px;font-size:22px}.sub{color:var(--mu);margin-bottom:18px}
+.grid{display:grid;gap:14px}.k4{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}.k2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:12px;padding:16px}
+.kpi .n{font-size:28px;font-weight:700}.kpi .l{color:var(--mu);font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+h3{margin:0 0 12px;font-size:15px}
+.bar{display:flex;align-items:center;gap:10px;margin:8px 0}.bar span.t{width:84px;color:var(--mu);font-size:13px}
+.bar .tr{flex:1;background:var(--pr2);border-radius:6px;height:12px;overflow:hidden}.bar .f{height:100%;background:var(--pr);border-radius:6px}
+.bar b{width:34px;text-align:right}
+.wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:1000px}
+th{text-align:left;font-size:12px;color:var(--mu);text-transform:uppercase;padding:8px 10px;border-bottom:1px solid var(--bd)}
+td{padding:10px;border-bottom:1px solid var(--bd);vertical-align:middle}
+input,select,textarea{font:inherit;color:var(--tx);background:var(--sf);border:1px solid var(--bd);border-radius:8px;padding:8px 10px;max-width:100%}
+td select,td input{padding:5px 7px}
+button.b{font:inherit;border:1px solid var(--bd);background:var(--sf);color:var(--tx);border-radius:8px;padding:7px 12px;cursor:pointer}
+button.p{background:var(--pr);color:#fff;border-color:var(--pr)}button.b:hover{filter:brightness(.96)}
+.tag{display:inline-block;padding:2px 9px;border-radius:10px;font-size:12px;background:var(--pr2);color:var(--pr)}
+.tag.Won{background:#dcfce7;color:#166534}.tag.Lost{background:#fee2e2;color:#991b1b}.tag.Proposal{background:#fef3c7;color:#92400e}
+.bar2{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.fu{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:10px 0;border-bottom:1px solid var(--bd)}.fu:last-child{border:0}
+.od{color:var(--er);font-weight:600}.td{color:var(--wa);font-weight:600}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:16px;z-index:50}.modal.on{display:flex}
+.mb{background:var(--sf);border-radius:14px;padding:20px;width:480px;max-width:100%;max-height:90vh;overflow:auto}
+.mb label{display:block;font-size:12px;color:var(--mu);margin:10px 0 3px}.mb input,.mb select,.mb textarea{width:100%}
+.prog{height:8px;background:var(--pr2);border-radius:6px;overflow:hidden;margin:8px 0 12px}.prog div{height:100%;background:var(--ok)}
+.task{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:9px 0;border-top:1px solid var(--bd);flex-wrap:wrap}
+.task small{color:var(--mu);display:block}
+.sw{position:relative;width:42px;height:24px;background:#cbd5e1;border-radius:12px;cursor:pointer;border:0;flex-shrink:0}.sw:after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.15s}.sw.on{background:var(--ok)}.sw.on:after{left:21px}
+.toast{position:fixed;bottom:20px;right:20px;background:var(--sb);color:#fff;padding:10px 16px;border-radius:10px;display:none;z-index:60}
+.empty{color:var(--mu);padding:14px 0}
+@media(max-width:760px){body{flex-direction:column}aside{width:100%;flex-direction:row;overflow-x:auto;padding:8px}.logo{display:none}.nav{white-space:nowrap}main{padding:14px}}
+</style></head><body>
+<aside><div class="logo">Lead<b>Flow</b> CRM</div>
+<button class="nav on" data-v="dash">📊 Dashboard</button>
+<button class="nav" data-v="leads">👥 Leads</button>
+<button class="nav" data-v="fu">⏰ Follow-ups <span class="badge" id="fb"></span></button>
+<button class="nav" data-v="onb">🚀 Onboarding</button>
+<button class="nav" data-v="int">🔌 Integrations</button></aside>
+<main id="m"></main>
+<div class="modal" id="md"><div class="mb">
+<h3>Add new lead</h3>
+<label>Name *</label><input id="fn"><label>Company</label><input id="fc">
+<label>Phone</label><input id="fp"><label>Email</label><input id="fe">
+<label>Source</label><select id="fs"><option>Website</option><option>Google Business</option><option>WhatsApp</option><option>Referral</option><option>Facebook Ads</option><option>Cold Call</option></select>
+<label>Deal value (₹)</label><input id="fv" type="number" value="0">
+<label>Assign to</label><select id="fo"></select>
+<label>Next follow-up</label><input id="fd" type="date">
+<label>Remarks</label><textarea id="fnt" rows="2"></textarea>
+<div style="margin-top:14px;display:flex;gap:8px;justify-content:flex-end"><button class="b" onclick="closeM()">Cancel</button><button class="b p" onclick="addLead()">Save lead</button></div>
+</div></div>
+<div class="toast" id="ts"></div>
+<script>
+var STAGES=["New","Contacted","Qualified","Proposal","Won","Lost"],OWN=["Aarav","Priya","Rohan","Unassigned"];
+var TASKS=[["web","Website design","Design and launch the client’s website"],["cv","Intern CV screening","Shortlist intern CVs for the account"],["alloc","Leads allotment","Distribute the client’s leads to team members"],["gbp","Google Business setup","Create and verify the Google Business profile"]];
+var INTS=[["Website lead form","Capture enquiries straight into Leads"],["Google Business Profile","Pull calls and messages as leads"],["WhatsApp Business","Log chats and send follow-up reminders"],["Gmail / Outlook","Sync email threads with each lead"],["Google Calendar","Push follow-ups to your calendar"],["Facebook / Instagram Ads","Import lead-gen form submissions"],["Zapier / Webhooks","Connect 5,000+ other apps"]];
+function iso(o){var d=new Date();d.setDate(d.getDate()+o);return d.toISOString().slice(0,10)}
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function seed(){return{n:20,v:"dash",q:"",sf:"All",leads:[
+{id:1,name:"Rahul Mehta",company:"Mehta Interiors",phone:"9810012345",email:"rahul@mehta.in",source:"Website",stage:"Qualified",owner:"Aarav",follow:iso(0),value:45000,notes:"Wants a 5-page site"},
+{id:2,name:"Sneha Kapoor",company:"Glow Salon",phone:"9899045678",email:"sneha@glow.in",source:"Google Business",stage:"Contacted",owner:"Priya",follow:iso(-2),value:30000,notes:"Needs GBP setup"},
+{id:3,name:"Vikram Singh",company:"VS Traders",phone:"9711122233",email:"vik@vstraders.in",source:"Referral",stage:"Proposal",owner:"Rohan",follow:iso(2),value:80000,notes:"Proposal sent"},
+{id:4,name:"Ananya Rao",company:"Rao Clinic",phone:"9654433221",email:"ananya@raoclinic.in",source:"Facebook Ads",stage:"New",owner:"Unassigned",follow:iso(1),value:25000,notes:""},
+{id:5,name:"Deepak Jain",company:"Jain Sweets",phone:"9873311220",email:"deepak@jainsweets.in",source:"WhatsApp",stage:"Won",owner:"Priya",follow:"",value:60000,notes:"Signed"},
+{id:6,name:"Pooja Nair",company:"Nair Academy",phone:"9910099100",email:"pooja@nair.edu",source:"Cold Call",stage:"Lost",owner:"Aarav",follow:"",value:20000,notes:"Budget issue"}],
+onb:[{id:10,leadId:5,client:"Jain Sweets",t:{web:{s:"In progress",o:"Priya"},cv:{s:"To do",o:"Unassigned"},alloc:{s:"Done",o:"Aarav"},gbp:{s:"To do",o:"Unassigned"}}}],
+ints:{}}}
+var S;try{S=JSON.parse(localStorage.getItem("lf1"))}catch(e){}if(!S||!S.leads)S=seed();
+function save(){try{localStorage.setItem("lf1",JSON.stringify(S))}catch(e){}}
+function toast(t){var e=document.getElementById("ts");e.textContent=t;e.style.display="block";setTimeout(function(){e.style.display="none"},2000)}
+function lead(id){return S.leads.filter(function(l){return l.id==id})[0]}
+function opts(a,v){return a.map(function(x){return"<option"+(x==v?" selected":"")+">"+esc(x)+"</option>"}).join("")}
+function inr(n){return"₹"+Number(n||0).toLocaleString("en-IN")}
+function fuLeads(){return S.leads.filter(function(l){return l.follow&&l.stage!="Won"&&l.stage!="Lost"}).sort(function(a,b){return a.follow<b.follow?-1:1})}
+function dueLabel(d){var t=iso(0);return d<t?'<span class="od">Overdue · '+d+'</span>':d==t?'<span class="td">Today</span>':d}
+function setV(v){S.v=v;save();document.querySelectorAll(".nav").forEach(function(b){b.classList.toggle("on",b.dataset.v==v)});render()}
+document.querySelectorAll(".nav").forEach(function(b){b.onclick=function(){setV(b.dataset.v)}});
+function head(t,s,btn){return'<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap"><div><h1>'+t+'</h1><div class="sub">'+s+'</div></div>'+(btn||"")+'</div>'}
+function render(){
+var due=fuLeads().filter(function(l){return l.follow<=iso(0)}).length;document.getElementById("fb").textContent=due||"";document.getElementById("fb").style.display=due?"":"none";
+var m=document.getElementById("m");m.innerHTML=({dash:vDash,leads:vLeads,fu:vFu,onb:vOnb,int:vInt})[S.v]()}
+function vDash(){
+var L=S.leads,won=L.filter(function(l){return l.stage=="Won"}),open=L.filter(function(l){return l.stage!="Won"&&l.stage!="Lost"});
+var pipe=open.reduce(function(a,l){return a+Number(l.value)},0),conv=L.length?Math.round(won.length/L.length*100):0;
+var f=fuLeads(),od=f.filter(function(l){return l.follow<iso(0)}).length,td=f.filter(function(l){return l.follow==iso(0)}).length;
+var mx=Math.max.apply(null,STAGES.map(function(s){return L.filter(function(l){return l.stage==s}).length}).concat([1]));
+var st=STAGES.map(function(s){var c=L.filter(function(l){return l.stage==s}).length;return'<div class="bar"><span class="t">'+s+'</span><div class="tr"><div class="f" style="width:'+c/mx*100+'%"></div></div><b>'+c+'</b></div>'}).join("");
+var srcs={};L.forEach(function(l){srcs[l.source]=(srcs[l.source]||0)+1});var sm=Math.max.apply(null,Object.keys(srcs).map(function(k){return srcs[k]}).concat([1]));
+var sr=Object.keys(srcs).map(function(k){return'<div class="bar"><span class="t" style="width:110px">'+esc(k)+'</span><div class="tr"><div class="f" style="width:'+srcs[k]/sm*100+'%;background:#0ea5e9"></div></div><b>'+srcs[k]+'</b></div>'}).join("");
+var fl=f.slice(0,5).map(function(l){return'<div class="fu"><div><b>'+esc(l.name)+'</b><div style="color:var(--mu);font-size:12px">'+esc(l.company)+' · '+esc(l.owner)+'</div></div><div>'+dueLabel(l.follow)+'</div></div>'}).join("")||'<div class="empty">No follow-ups scheduled.</div>';
+var ow=OWN.slice(0,3).map(function(o){var mine=L.filter(function(l){return l.owner==o});return'<div class="bar"><span class="t">'+o+'</span><div class="tr"><div class="f" style="width:'+(L.length?mine.length/L.length*100:0)+'%;background:#8b5cf6"></div></div><b>'+mine.length+'</b></div>'}).join("");
+return head("Dashboard","Live overview of your sales pipeline",'<button class="b p" onclick="openM()">+ Add lead</button>')+
+'<div class="grid k4"><div class="card kpi"><div class="l">Total leads</div><div class="n">'+L.length+'</div></div><div class="card kpi"><div class="l">Open pipeline</div><div class="n">'+inr(pipe)+'</div></div><div class="card kpi"><div class="l">Follow-ups due</div><div class="n">'+(od+td)+'</div><small class="od">'+od+' overdue</small></div><div class="card kpi"><div class="l">Conversion</div><div class="n">'+conv+'%</div><small style="color:var(--mu)">'+won.length+' won</small></div></div>'+
+'<div class="grid k2" style="margin-top:14px"><div class="card"><h3>Pipeline by stage</h3>'+st+'</div><div class="card"><h3>Upcoming follow-ups</h3>'+fl+'</div><div class="card"><h3>Leads by source</h3>'+sr+'</div><div class="card"><h3>Lead allotment by owner</h3>'+ow+'</div></div>'}
+function vLeads(){
+var q=S.q.toLowerCase(),L=S.leads.filter(function(l){return(S.sf=="All"||l.stage==S.sf)&&(l.name+l.company+l.phone+l.email).toLowerCase().indexOf(q)>-1});
+var rows=L.map(function(l){return'<tr><td><b>'+esc(l.name)+'</b><div style="color:var(--mu);font-size:12px">'+esc(l.company)+'</div></td><td><a href="tel:'+esc(l.phone)+'">'+esc(l.phone)+'</a><div style="font-size:12px"><a href="mailto:'+esc(l.email)+'">'+esc(l.email)+'</a></div></td><td>'+esc(l.source)+'</td><td>'+inr(l.value)+'</td>'+
+'<td><select onchange="setStage('+l.id+',this.value)">'+opts(STAGES,l.stage)+'</select></td><td><select onchange="setOwn('+l.id+',this.value)">'+opts(OWN,l.owner)+'</select></td><td><input type="date" value="'+esc(l.follow)+'" onchange="setFu('+l.id+',this.value)"></td><td><input value="'+esc(l.notes)+'" placeholder="Add remark…" onchange="setNote('+l.id+',this.value)" style="min-width:180px"></td><td><button class="b" onclick="delLead('+l.id+')" title="Delete">🗑</button></td></tr>'}).join("");
+return head("Leads","Search, filter, assign and move leads through stages",'<button class="b p" onclick="openM()">+ Add lead</button>')+
+'<div class="bar2"><input id="q" placeholder="Search name, company, phone…" value="'+esc(S.q)+'" oninput="S.q=this.value;rerowSearch()" style="min-width:240px"><select onchange="S.sf=this.value;render()"><option>All</option>'+opts(STAGES,S.sf)+'</select><span style="color:var(--mu)">'+L.length+' leads</span><button class="b" onclick="openImp()">⬆ Import CSV</button><button class="b" onclick="sampleCsv()">Sample CSV</button><button class="b" onclick="exportCsv()">⬇ Export CSV</button><input type="file" id="imp" accept=".csv,.txt,text/csv" style="display:none" onchange="impFile(this)"></div>'+
+'<div class="card wrap" style="padding:6px"><table><thead><tr><th>Lead</th><th>Contact</th><th>Source</th><th>Value</th><th>Stage</th><th>Owner</th><th>Follow-up</th><th>Remarks</th><th></th></tr></thead><tbody>'+(rows||'<tr><td colspan="9" class="empty">No leads found.</td></tr>')+'</tbody></table></div>'}
+function rerowSearch(){var p=document.getElementById("q").selectionStart;render();var e=document.getElementById("q");e.focus();e.setSelectionRange(p,p)}
+function vFu(){
+var f=fuLeads();
+var g=function(t,a,c){return'<div class="card" style="margin-bottom:14px"><h3 class="'+c+'">'+t+' ('+a.length+')</h3>'+(a.map(function(l){return'<div class="fu"><div><b>'+esc(l.name)+'</b> · '+esc(l.company)+'<div style="color:var(--mu);font-size:12px">'+esc(l.stage)+' · '+esc(l.owner)+'</div><input value="'+esc(l.notes)+'" placeholder="Add remark…" onchange="setNote('+l.id+',this.value)" style="margin-top:6px;width:100%;min-width:220px"></div><div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">'+l.follow+' <a class="b" style="text-decoration:none;padding:7px 10px;border:1px solid var(--bd);border-radius:8px" href="tel:'+esc(l.phone)+'">📞 Call</a><button class="b" onclick="snooze('+l.id+')">+1 day</button><button class="b p" onclick="doneFu('+l.id+')">✓ Done</button></div></div>'}).join("")||'<div class="empty">Nothing here.</div>')+'</div>'};
+var t=iso(0);
+return head("Follow-ups","Never miss a callback")+g("Overdue",f.filter(function(l){return l.follow<t}),"od")+g("Today",f.filter(function(l){return l.follow==t}),"td")+g("Upcoming",f.filter(function(l){return l.follow>t}),"")}
+function vOnb(){
+var cards=S.onb.map(function(o){var d=0;TASKS.forEach(function(t){if(o.t[t[0]].s=="Done")d++});var pc=d/TASKS.length*100;
+return'<div class="card"><div style="display:flex;justify-content:space-between"><h3 style="margin:0">'+esc(o.client)+'</h3><b>'+Math.round(pc)+'%</b></div><div class="prog"><div style="width:'+pc+'%"></div></div>'+
+TASKS.map(function(t){var x=o.t[t[0]];return'<div class="task"><div><b>'+t[1]+'</b><small>'+t[2]+'</small></div><div style="display:flex;gap:6px"><select onchange="setTask('+o.id+',\''+t[0]+'\',\'o\',this.value)">'+opts(OWN,x.o)+'</select><select onchange="setTask('+o.id+',\''+t[0]+'\',\'s\',this.value)">'+opts(["To do","In progress","Done"],x.s)+'</select></div></div>'}).join("")+'</div>'}).join("");
+return head("Client onboarding","Created automatically when a lead is marked Won")+(cards?'<div class="grid k2">'+cards+'</div>':'<div class="card empty">No clients yet. Move a lead to “Won” on the Leads page and onboarding starts automatically.</div>')}
+function vInt(){
+return head("Integrations","Connect the tools your team already uses")+'<div class="card">'+INTS.map(function(i){var on=S.ints[i[0]];return'<div class="task" style="border-top:0;border-bottom:1px solid var(--bd)"><div><b>'+i[0]+'</b><small>'+i[1]+'</small></div><div style="display:flex;gap:10px;align-items:center"><span style="color:var(--mu);font-size:12px">'+(on?"Connected":"Not connected")+'</span><button class="sw'+(on?" on":"")+'" onclick="togInt(\''+i[0]+'\')"></button></div></div>'}).join("")+'</div>'}
+function openM(){document.getElementById("fo").innerHTML=opts(OWN,"Unassigned");document.getElementById("fd").value=iso(1);document.getElementById("md").classList.add("on")}
+function closeM(){document.getElementById("md").classList.remove("on")}
+function addLead(){var g=function(i){return document.getElementById(i).value.trim()};if(!g("fn")){toast("Name is required");return}
+S.leads.unshift({id:S.n++,name:g("fn"),company:g("fc"),phone:g("fp"),email:g("fe"),source:g("fs"),stage:"New",owner:g("fo"),follow:g("fd"),value:Number(g("fv"))||0,notes:g("fnt")});
+["fn","fc","fp","fe","fnt"].forEach(function(i){document.getElementById(i).value=""});save();closeM();toast("Lead added");render()}
+function setStage(id,v){var l=lead(id);l.stage=v;if(v=="Won"||v=="Lost")l.follow="";
+if(v=="Won"&&!S.onb.some(function(o){return o.leadId==id})){var t={};TASKS.forEach(function(k){t[k[0]]={s:"To do",o:"Unassigned"}});S.onb.unshift({id:S.n++,leadId:id,client:l.company||l.name,t:t});toast("Won! Onboarding tasks created");save();setV("onb");return}
+save();render()}
+function setOwn(id,v){lead(id).owner=v;save();toast("Lead assigned to "+v)}
+function setNote(id,v){lead(id).notes=v.trim();save();toast("Remark saved")}
+function setFu(id,v){lead(id).follow=v;save();render()}
+function delLead(id){if(confirm("Delete this lead?")){S.leads=S.leads.filter(function(l){return l.id!=id});save();render()}}
+function snooze(id){var l=lead(id),d=new Date(l.follow+"T00:00:00");d.setDate(d.getDate()+1);l.follow=d.toISOString().slice(0,10);if(l.follow<iso(0))l.follow=iso(1);save();render()}
+function doneFu(id){var l=lead(id);if(l.stage=="New")l.stage="Contacted";l.follow=iso(3);save();toast("Done. Next follow-up set in 3 days");render()}
+function setTask(id,k,f,v){S.onb.filter(function(o){return o.id==id})[0].t[k][f]=v;save();render()}
+function togInt(n){S.ints[n]=!S.ints[n];save();toast(n+(S.ints[n]?" connected":" disconnected"));render()}
+var NL=String.fromCharCode(10),CR=String.fromCharCode(13),QT=String.fromCharCode(34);
+function parseCsv(t){if(t.charCodeAt(0)==65279)t=t.slice(1);var rows=[],r=[],c='',q=false;for(var i=0;i<t.length;i++){var ch=t.charAt(i);if(q){if(ch==QT){if(t.charAt(i+1)==QT){c+=QT;i++}else q=false}else c+=ch}else if(ch==QT)q=true;else if(ch==','){r.push(c);c=''}else if(ch==NL||ch==CR){if(ch==CR&&t.charAt(i+1)==NL)i++;r.push(c);c='';rows.push(r);r=[]}else c+=ch}
+if(c!==''||r.length){r.push(c);rows.push(r)}
+return rows.filter(function(x){return x.some(function(v){return v.trim()})})}
+function mapCsv(rows,existing){var h=rows[0].map(function(x){return x.toLowerCase().trim()}),ix=function(re){for(var i=0;i<h.length;i++)if(re.test(h[i]))return i;return -1};
+var m={name:ix(/name/),phone:ix(/phone|mobile|number|contact|whatsapp/),email:ix(/mail/),company:ix(/company|business|org/),source:ix(/source/),notes:ix(/remark|note/)},start=1;
+if(m.name<0&&m.phone<0&&m.email<0){m={name:0,phone:1,email:2,company:-1,source:-1,notes:-1};start=0}else if(m.name<0)m.name=0;
+var dg=function(s){return s.replace(/[^0-9]/g,'')},seen={};existing.forEach(function(l){if(l.phone)seen['p'+dg(l.phone)]=1;if(l.email)seen['e'+l.email.toLowerCase()]=1});
+var out=[],dup=0,bad=0;
+for(var i=start;i<rows.length;i++){var r=rows[i],g=function(k){return m[k]>=0&&r[m[k]]!=null?String(r[m[k]]).trim():''};
+var nm=g('name'),ph=g('phone'),em=g('email');if(!nm){bad++;continue}
+var kp=dg(ph)?'p'+dg(ph):'',ke=em?'e'+em.toLowerCase():'';
+if((kp&&seen[kp])||(ke&&seen[ke])){dup++;continue}if(kp)seen[kp]=1;if(ke)seen[ke]=1;
+out.push({name:nm,phone:ph,email:em,company:g('company'),source:g('source')||'Import',notes:g('notes')})}
+return{rows:out,dup:dup,bad:bad}}
+function toCsv(r){return r.map(function(x){return x.map(function(v){return QT+String(v==null?'':v).split(QT).join(QT+QT)+QT}).join(',')}).join(NL)}
+function dl(name,c){if(!window.claude||!claude.use){toast('Download not available here');return}claude.use('downloads').then(function(d){if(!d){toast('Download not available here');return}return d.save({filename:name,data:String.fromCharCode(65279)+c}).then(function(){toast('File ready')},function(e){if(!e||e.code!=='declined')toast('Download failed')})}).catch(function(){toast('Download not available here')})}
+function sampleCsv(){dl('sample_leads.csv',toCsv([['Name','Phone','Email','Company','Source','Remarks'],['Rohit Sharma','9810011111','rohit@sharmaco.in','Sharma & Co','Website','Asked for pricing'],['Meena Iyer','9820022222','meena@iyerfoods.in','Iyer Foods','Referral','Call after Diwali']]))}
+function openImp(){document.getElementById('imp').click()}
+function impFile(inp){var f=inp.files&&inp.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){try{var rows=parseCsv(String(rd.result));if(!rows.length){toast('File is empty');return}var r=mapCsv(rows,S.leads);r.rows.slice().reverse().forEach(function(x){S.leads.unshift({id:S.n++,name:x.name,company:x.company,phone:x.phone,email:x.email,source:x.source,stage:'New',owner:'Unassigned',follow:iso(1),value:0,notes:x.notes})});save();toast(r.rows.length+' imported, '+r.dup+' duplicates, '+r.bad+' skipped');render()}catch(e){toast('Could not read this file')}};rd.readAsText(f)}
+function exportCsv(){dl('leads.csv',toCsv([['Name','Company','Phone','Email','Source','Stage','Owner','Follow-up','Value','Remarks']].concat(S.leads.map(function(l){return[l.name,l.company,l.phone,l.email,l.source,l.stage,l.owner,l.follow,l.value,l.notes]}))))}
+function exportOld(){var r=[["Name","Company","Phone","Email","Source","Stage","Owner","Follow-up","Value"]].concat(S.leads.map(function(l){return[l.name,l.company,l.phone,l.email,l.source,l.stage,l.owner,l.follow,l.value]}));
+var c=r.map(function(x){return x.map(function(v){return'"'+String(v).replace(/"/g,'""')+'"'}).join(",")}).join("\n");
+var a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(c);a.download="leads.csv";a.click()}
+setV(S.v||"dash");
+</script></body></html>
