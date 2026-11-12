@@ -52,12 +52,12 @@ button.p{background:var(--pr);color:#fff;border-color:var(--pr)}button.b:hover{f
 <button class="nav" data-v="int">🔌 Integrations</button></aside>
 <main id="m"></main>
 <div class="modal" id="md"><div class="mb">
-<h3>Add new lead</h3>
+<h3 id="mt">Add new lead</h3>
 <label>Name *</label><input id="fn"><label>Company</label><input id="fc">
 <label>Phone</label><input id="fp"><label>Email</label><input id="fe">
 <label>Source</label><select id="fs"><option>Website</option><option>Google Business</option><option>WhatsApp</option><option>Referral</option><option>Facebook Ads</option><option>Cold Call</option></select>
 <label>Deal value (₹)</label><input id="fv" type="number" value="0">
-<label>Assign to</label><select id="fo"></select>
+<label>Assign to</label><select id="fo"></select><label>Stage</label><select id="fst"></select>
 <label>Next follow-up</label><input id="fd" type="date">
 <label>Remarks</label><textarea id="fnt" rows="2"></textarea>
 <div style="margin-top:14px;display:flex;gap:8px;justify-content:flex-end"><button class="b" onclick="closeM()">Cancel</button><button class="b p" onclick="addLead()">Save lead</button></div>
@@ -79,7 +79,7 @@ function seed(){return{n:20,v:"dash",q:"",sf:"All",leads:[
 onb:[{id:10,leadId:5,client:"Jain Sweets",t:{web:{s:"In progress",o:"Priya"},cv:{s:"To do",o:"Unassigned"},alloc:{s:"Done",o:"Aarav"},gbp:{s:"To do",o:"Unassigned"}}}],
 ints:{}}}
 var S;try{S=JSON.parse(localStorage.getItem("lf1"))}catch(e){}if(!S||!S.leads)S=seed();
-function save(){try{localStorage.setItem("lf1",JSON.stringify(S))}catch(e){}}
+function save(){S.ts=Date.now();try{localStorage.setItem("lf1",JSON.stringify(S))}catch(e){}push()}
 function toast(t){var e=document.getElementById("ts");e.textContent=t;e.style.display="block";setTimeout(function(){e.style.display="none"},2000)}
 function lead(id){return S.leads.filter(function(l){return l.id==id})[0]}
 function opts(a,v){return a.map(function(x){return"<option"+(x==v?" selected":"")+">"+esc(x)+"</option>"}).join("")}
@@ -108,9 +108,9 @@ return head("Dashboard","Live overview of your sales pipeline",'<button class="b
 function vLeads(){
 var q=S.q.toLowerCase(),L=S.leads.filter(function(l){return(S.sf=="All"||l.stage==S.sf)&&(l.name+l.company+l.phone+l.email).toLowerCase().indexOf(q)>-1});
 var rows=L.map(function(l){return'<tr><td><b>'+esc(l.name)+'</b><div style="color:var(--mu);font-size:12px">'+esc(l.company)+'</div></td><td><a href="tel:'+esc(l.phone)+'">'+esc(l.phone)+'</a><div style="font-size:12px"><a href="mailto:'+esc(l.email)+'">'+esc(l.email)+'</a></div></td><td>'+esc(l.source)+'</td><td>'+inr(l.value)+'</td>'+
-'<td><select onchange="setStage('+l.id+',this.value)">'+opts(STAGES,l.stage)+'</select></td><td><select onchange="setOwn('+l.id+',this.value)">'+opts(OWN,l.owner)+'</select></td><td><input type="date" value="'+esc(l.follow)+'" onchange="setFu('+l.id+',this.value)"></td><td><input value="'+esc(l.notes)+'" placeholder="Add remark…" onchange="setNote('+l.id+',this.value)" style="min-width:180px"></td><td><button class="b" onclick="delLead('+l.id+')" title="Delete">🗑</button></td></tr>'}).join("");
+'<td><select onchange="setStage('+l.id+',this.value)">'+opts(STAGES,l.stage)+'</select></td><td><select onchange="setOwn('+l.id+',this.value)">'+opts(OWN,l.owner)+'</select></td><td><input type="date" value="'+esc(l.follow)+'" onchange="setFu('+l.id+',this.value)"></td><td><input value="'+esc(l.notes)+'" placeholder="Add remark…" onchange="setNote('+l.id+',this.value)" style="min-width:180px"></td><td style="white-space:nowrap"><button class="b p" onclick="editLead('+l.id+')">✏ Edit</button> <button class="b" onclick="delLead('+l.id+')" title="Delete">🗑</button></td></tr>'}).join("");
 return head("Leads","Search, filter, assign and move leads through stages",'<button class="b p" onclick="openM()">+ Add lead</button>')+
-'<div class="bar2"><input id="q" placeholder="Search name, company, phone…" value="'+esc(S.q)+'" oninput="S.q=this.value;rerowSearch()" style="min-width:240px"><select onchange="S.sf=this.value;render()"><option>All</option>'+opts(STAGES,S.sf)+'</select><span style="color:var(--mu)">'+L.length+' leads</span><button class="b" onclick="openImp()">⬆ Import CSV</button><button class="b" onclick="sampleCsv()">Sample CSV</button><button class="b" onclick="exportCsv()">⬇ Export CSV</button><input type="file" id="imp" accept=".csv,.txt,text/csv" style="display:none" onchange="impFile(this)"></div>'+
+'<div class="bar2"><input id="q" placeholder="Search name, company, phone…" value="'+esc(S.q)+'" oninput="S.q=this.value;rerowSearch()" style="min-width:240px"><select onchange="S.sf=this.value;render()"><option>All</option>'+opts(STAGES,S.sf)+'</select><span style="color:var(--mu)">'+L.length+' leads</span><button class="b" onclick="openImp()">⬆ Import CSV</button><button class="b" onclick="sampleCsv()">Sample CSV</button><button class="b" onclick="autoAllot()">⚡ Auto-allot</button><button class="b" onclick="exportCsv()">⬇ Export CSV</button><input type="file" id="imp" accept=".csv,.txt,text/csv" style="display:none" onchange="impFile(this)"></div>'+
 '<div class="card wrap" style="padding:6px"><table><thead><tr><th>Lead</th><th>Contact</th><th>Source</th><th>Value</th><th>Stage</th><th>Owner</th><th>Follow-up</th><th>Remarks</th><th></th></tr></thead><tbody>'+(rows||'<tr><td colspan="9" class="empty">No leads found.</td></tr>')+'</tbody></table></div>'}
 function rerowSearch(){var p=document.getElementById("q").selectionStart;render();var e=document.getElementById("q");e.focus();e.setSelectionRange(p,p)}
 function vFu(){
@@ -124,10 +124,10 @@ return'<div class="card"><div style="display:flex;justify-content:space-between"
 TASKS.map(function(t){var x=o.t[t[0]];return'<div class="task"><div><b>'+t[1]+'</b><small>'+t[2]+'</small></div><div style="display:flex;gap:6px"><select onchange="setTask('+o.id+',\''+t[0]+'\',\'o\',this.value)">'+opts(OWN,x.o)+'</select><select onchange="setTask('+o.id+',\''+t[0]+'\',\'s\',this.value)">'+opts(["To do","In progress","Done"],x.s)+'</select></div></div>'}).join("")+'</div>'}).join("");
 return head("Client onboarding","Created automatically when a lead is marked Won")+(cards?'<div class="grid k2">'+cards+'</div>':'<div class="card empty">No clients yet. Move a lead to “Won” on the Leads page and onboarding starts automatically.</div>')}
 function vInt(){
-return head("Integrations","Connect the tools your team already uses")+'<div class="card">'+INTS.map(function(i){var on=S.ints[i[0]];return'<div class="task" style="border-top:0;border-bottom:1px solid var(--bd)"><div><b>'+i[0]+'</b><small>'+i[1]+'</small></div><div style="display:flex;gap:10px;align-items:center"><span style="color:var(--mu);font-size:12px">'+(on?"Connected":"Not connected")+'</span><button class="sw'+(on?" on":"")+'" onclick="togInt(\''+i[0]+'\')"></button></div></div>'}).join("")+'</div>'}
+return head("Integrations","Connect the tools your team already uses")+cloudCard()+'<div class="card">'+INTS.map(function(i){var on=S.ints[i[0]];return'<div class="task" style="border-top:0;border-bottom:1px solid var(--bd)"><div><b>'+i[0]+'</b><small>'+i[1]+'</small></div><div style="display:flex;gap:10px;align-items:center"><span style="color:var(--mu);font-size:12px">'+(on?"Connected":"Not connected")+'</span><button class="sw'+(on?" on":"")+'" onclick="togInt(\''+i[0]+'\')"></button></div></div>'}).join("")+'</div>'}
 function openM(){document.getElementById("fo").innerHTML=opts(OWN,"Unassigned");document.getElementById("fd").value=iso(1);document.getElementById("md").classList.add("on")}
 function closeM(){document.getElementById("md").classList.remove("on")}
-function addLead(){var g=function(i){return document.getElementById(i).value.trim()};if(!g("fn")){toast("Name is required");return}
+function addLeadOld(){var g=function(i){return document.getElementById(i).value.trim()};if(!g("fn")){toast("Name is required");return}
 S.leads.unshift({id:S.n++,name:g("fn"),company:g("fc"),phone:g("fp"),email:g("fe"),source:g("fs"),stage:"New",owner:g("fo"),follow:g("fd"),value:Number(g("fv"))||0,notes:g("fnt")});
 ["fn","fc","fp","fe","fnt"].forEach(function(i){document.getElementById(i).value=""});save();closeM();toast("Lead added");render()}
 function setStage(id,v){var l=lead(id);l.stage=v;if(v=="Won"||v=="Lost")l.follow="";
@@ -157,13 +157,28 @@ if((kp&&seen[kp])||(ke&&seen[ke])){dup++;continue}if(kp)seen[kp]=1;if(ke)seen[ke
 out.push({name:nm,phone:ph,email:em,company:g('company'),source:g('source')||'Import',notes:g('notes')})}
 return{rows:out,dup:dup,bad:bad}}
 function toCsv(r){return r.map(function(x){return x.map(function(v){return QT+String(v==null?'':v).split(QT).join(QT+QT)+QT}).join(',')}).join(NL)}
-function dl(name,c){if(!window.claude||!claude.use){toast('Download not available here');return}claude.use('downloads').then(function(d){if(!d){toast('Download not available here');return}return d.save({filename:name,data:String.fromCharCode(65279)+c}).then(function(){toast('File ready')},function(e){if(!e||e.code!=='declined')toast('Download failed')})}).catch(function(){toast('Download not available here')})}
+function dl(name,c){if(!window.claude||!claude.use){blobDl(name,c);return}claude.use('downloads').then(function(d){if(!d){blobDl(name,c);return}return d.save({filename:name,data:String.fromCharCode(65279)+c}).then(function(){toast('File ready')},function(e){if(!e||e.code!=='declined')toast('Download failed')})}).catch(function(){toast('Download not available here')})}
 function sampleCsv(){dl('sample_leads.csv',toCsv([['Name','Phone','Email','Company','Source','Remarks'],['Rohit Sharma','9810011111','rohit@sharmaco.in','Sharma & Co','Website','Asked for pricing'],['Meena Iyer','9820022222','meena@iyerfoods.in','Iyer Foods','Referral','Call after Diwali']]))}
 function openImp(){document.getElementById('imp').click()}
 function impFile(inp){var f=inp.files&&inp.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){try{var rows=parseCsv(String(rd.result));if(!rows.length){toast('File is empty');return}var r=mapCsv(rows,S.leads);r.rows.slice().reverse().forEach(function(x){S.leads.unshift({id:S.n++,name:x.name,company:x.company,phone:x.phone,email:x.email,source:x.source,stage:'New',owner:'Unassigned',follow:iso(1),value:0,notes:x.notes})});save();toast(r.rows.length+' imported, '+r.dup+' duplicates, '+r.bad+' skipped');render()}catch(e){toast('Could not read this file')}};rd.readAsText(f)}
 function exportCsv(){dl('leads.csv',toCsv([['Name','Company','Phone','Email','Source','Stage','Owner','Follow-up','Value','Remarks']].concat(S.leads.map(function(l){return[l.name,l.company,l.phone,l.email,l.source,l.stage,l.owner,l.follow,l.value,l.notes]}))))}
+var EID=null,CU='',SY='',pt=null;try{CU=localStorage.getItem('lf1url')||''}catch(e){}
+function blobDl(n,c){var u=URL.createObjectURL(new Blob([String.fromCharCode(65279)+c],{type:'text/csv'})),a=document.createElement('a');a.href=u;a.download=n;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},1000);toast('File downloaded')}
+function openM(){EID=null;document.getElementById('mt').textContent='Add new lead';['fn','fc','fp','fe','fnt'].forEach(function(i){document.getElementById(i).value=''});document.getElementById('fv').value=0;document.getElementById('fs').value='Website';document.getElementById('fo').innerHTML=opts(OWN,'Unassigned');document.getElementById('fst').innerHTML=opts(STAGES,'New');document.getElementById('fd').value=iso(1);document.getElementById('md').classList.add('on')}
+function editLead(id){var l=lead(id);openM();EID=id;document.getElementById('mt').textContent='Edit lead';[['fn','name'],['fc','company'],['fp','phone'],['fe','email'],['fd','follow'],['fnt','notes']].forEach(function(p){document.getElementById(p[0]).value=l[p[1]]||''});document.getElementById('fv').value=l.value||0;document.getElementById('fo').innerHTML=opts(OWN,l.owner);document.getElementById('fst').innerHTML=opts(STAGES,l.stage);var fs=document.getElementById('fs');if(!Array.prototype.some.call(fs.options,function(o){return o.value==l.source})){var op=document.createElement('option');op.textContent=l.source;fs.appendChild(op)}fs.value=l.source}
+function addLead(){var g=function(i){return document.getElementById(i).value.trim()};if(!g('fn')){toast('Name is required');return}var o={name:g('fn'),company:g('fc'),phone:g('fp'),email:g('fe'),source:g('fs'),owner:g('fo'),follow:g('fd'),value:Number(g('fv'))||0,notes:g('fnt')},st=g('fst'),id=EID;
+if(id){var l=lead(id);for(var k in o)l[k]=o[k];toast('Lead updated')}else{id=S.n++;o.id=id;o.stage='New';S.leads.unshift(o);toast('Lead added')}
+EID=null;closeM();setStage(id,st)}
+function autoAllot(){var team=OWN.slice(0,3),i=0,c=0;S.leads.forEach(function(l){if(l.owner=='Unassigned'&&l.stage!='Won'&&l.stage!='Lost'){l.owner=team[i++%team.length];c++}});save();toast(c+' leads allotted equally');render()}
+function setSync(m){SY=m;var e=document.getElementById('sy');if(e)e.textContent=m}
+function cloudUrl(){var u=CU;while(u.slice(-1)=='/')u=u.slice(0,-1);return u+'/leadflow.json'}
+function push(){if(!CU)return;clearTimeout(pt);pt=setTimeout(function(){fetch(cloudUrl(),{method:'PUT',body:JSON.stringify(S)}).then(function(r){if(!r.ok)throw 0;setSync('Synced '+new Date().toLocaleTimeString())}).catch(function(){setSync('Sync failed. Check the URL and database rules.')})},500)}
+function pull(force){if(!CU)return Promise.resolve();return fetch(cloudUrl()).then(function(r){return r.json()}).then(function(d){if(!d||!d.leads&&!d.ts){if(force)push();return}if(force||d.ts>(S.ts||0)){var v=S.v;d.leads=d.leads||[];d.onb=d.onb||[];d.ints=d.ints||{};d.q='';d.sf='All';S=d;S.v=v;try{localStorage.setItem('lf1',JSON.stringify(S))}catch(e){}var ae=document.activeElement;if(force||!ae||!/INPUT|SELECT|TEXTAREA/.test(ae.tagName)&&!document.getElementById('md').classList.contains('on'))render()}setSync('Synced '+new Date().toLocaleTimeString())}).catch(function(){setSync('Could not reach cloud. Check the URL.')})}
+function saveCloud(){CU=document.getElementById('cu').value.trim();try{localStorage.setItem('lf1url',CU)}catch(e){}if(CU){pull(true);setInterval(function(){pull(false)},8000)}else setSync('Cloud sync off')}
+function cloudCard(){return'<div class="card" style="margin-bottom:14px"><h3>☁ Cloud sync (same leads on every device)</h3><div style="color:var(--mu);margin-bottom:8px">Paste your Firebase Realtime Database URL here on every device. Leads, remarks and onboarding then stay in sync.</div><input id="cu" value="'+esc(CU)+'" placeholder="https://your-project-default-rtdb.firebaseio.com" style="width:100%;max-width:520px"> <button class="b p" onclick="saveCloud()">Connect</button> <button class="b" onclick="pull(true)">Sync now</button><div id="sy" style="margin-top:8px;color:var(--mu)">'+esc(SY)+'</div></div>'}
 function exportOld(){var r=[["Name","Company","Phone","Email","Source","Stage","Owner","Follow-up","Value"]].concat(S.leads.map(function(l){return[l.name,l.company,l.phone,l.email,l.source,l.stage,l.owner,l.follow,l.value]}));
 var c=r.map(function(x){return x.map(function(v){return'"'+String(v).replace(/"/g,'""')+'"'}).join(",")}).join("\n");
 var a=document.createElement("a");a.href="data:text/csv;charset=utf-8,"+encodeURIComponent(c);a.download="leads.csv";a.click()}
+if(CU){pull(false);setInterval(function(){pull(false)},8000)}
 setV(S.v||"dash");
 </script></body></html>
